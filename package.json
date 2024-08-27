@@ -1,5 +1,5 @@
 {
-  "name": "ngsi-ld",
+  "name": "@faubourg-numerique/ngsi-ld",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
