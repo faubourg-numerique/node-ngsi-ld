@@ -16,6 +16,11 @@ export class ContextBroker {
         this.contextBrokerMaxLimit = contextBrokerMaxLimit;
     }
 
+    async findEntity(id: string) {
+        const response = await this.client.get(`/entities/${encodeURIComponent(id)}`);
+        return new Entity(response.data);
+    }
+
     async findEntities({ type, query }: { type?: string, query?: string }) {
         const config: AxiosRequestConfig = {
             params: {
@@ -25,7 +30,6 @@ export class ContextBroker {
                 offset: 0
             }
         };
-
         const entities: Entity[] = [];
         while (true) {
             const response = await this.client.get("/entities", config);
