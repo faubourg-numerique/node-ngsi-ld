@@ -16,6 +16,14 @@ export class Entity {
         return this.data.type;
     }
 
+    setId(id: string) {
+        this.data.id = id;
+    }
+
+    setType(type: string) {
+        this.data.type = type;
+    }
+
     isProperty(name: string) {
         return this.data[name]?.type === "Property";
     }
