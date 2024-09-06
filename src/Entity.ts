@@ -5,7 +5,9 @@ export class Entity {
     };
 
     constructor(data: any) {
-        Object.assign(this.data, data);
+        if (data) {
+            Object.assign(this.data, data);
+        }
     }
 
     getId(): string {
