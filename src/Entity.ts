@@ -1,5 +1,8 @@
 export class Entity {
-    private data: any = {};
+    private data: any = {
+        id: "",
+        type: ""
+    };
 
     constructor(data: any) {
         Object.assign(this.data, data);
@@ -35,5 +38,9 @@ export class Entity {
 
     getGeoProperty(name: string) {
         return this.isGeoProperty(name) ? this.data[name].value : null;
+    }
+
+    toObject() {
+        return this.data;
     }
 }

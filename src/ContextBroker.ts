@@ -45,4 +45,16 @@ export class ContextBroker {
 
         return entities;
     }
+
+    async insertEntity(entity: Entity) {
+        await this.client.post("/entities", entity.toObject());
+    }
+
+    async updateEntity(entity: Entity) {
+        await this.client.put(`/entities/${encodeURIComponent(entity.getId())}`, entity.toObject());
+    }
+
+    async deleteEntity(entity: Entity) {
+        await this.client.delete(`/entities/${encodeURIComponent(entity.getId())}`);
+    }
 }
