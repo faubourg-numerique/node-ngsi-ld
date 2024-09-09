@@ -51,7 +51,7 @@ export class Entity {
     }
 
     getGeoProperty(name: string) {
-        return this.isGeoProperty(name) ? this.data[name].value : null;
+        return this.isGeoProperty(name) ? { type: this.data[name].value.type, coordinates: this.data[name].value.coordinates } : null;
     }
 
     setProperty(name: string, value: any) {
