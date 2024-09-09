@@ -4,7 +4,7 @@ export class Entity {
         type: ""
     };
 
-    constructor(data: any = null) {
+    constructor(data?: any) {
         if (data) {
             Object.assign(this.data, data);
         }
@@ -24,6 +24,10 @@ export class Entity {
 
     setType(type: string) {
         this.data.type = type;
+    }
+
+    isAttribute(name: string): boolean {
+        return this.data[name] && this.data[name].type;
     }
 
     isProperty(name: string) {
@@ -48,6 +52,33 @@ export class Entity {
 
     getGeoProperty(name: string) {
         return this.isGeoProperty(name) ? this.data[name].value : null;
+    }
+
+    setProperty(name: string, value: any) {
+        if (!this.isAttribute(this.data[name])) {
+            this.data[name] = {};
+        }
+        delete this.data[name].object;
+        this.data[name].type = "Property";
+        this.data[name].value = value;
+    }
+
+    setRelationship(name: string, object: string|string[]) {
+        if (!this.isAttribute(this.data[name])) {
+            this.data[name] = {};
+        }
+        delete this.data[name].value;
+        this.data[name].type = "Relationship";
+        this.data[name].object = object;
+    }
+
+    setGeoProperty(name: string, type: string, coordinates: any) {
+        if (!this.isAttribute(this.data[name])) {
+            this.data[name] = {};
+        }
+        delete this.data[name].object;
+        this.data[name].type = "GeoProperty";
+        this.data[name].value = { type, coordinates };
     }
 
     toObject() {
