@@ -4,7 +4,7 @@ export class Entity {
         type: ""
     };
 
-    constructor(data: any) {
+    constructor(data: any = null) {
         if (data) {
             Object.assign(this.data, data);
         }
