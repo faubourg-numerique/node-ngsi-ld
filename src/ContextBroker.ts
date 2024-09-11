@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import { Entity } from "./Entity";
+import { Subscription } from "./Subscription";
 
 export class ContextBroker {
     private client: AxiosInstance;
@@ -14,11 +15,6 @@ export class ContextBroker {
             }
         });
         this.contextBrokerMaxLimit = contextBrokerMaxLimit;
-    }
-
-    async findEntity(id: string) {
-        const response = await this.client.get(`/entities/${encodeURIComponent(id)}`);
-        return new Entity(response.data);
     }
 
     async findEntities({ type, query }: { type?: string, query?: string }) {
@@ -46,6 +42,11 @@ export class ContextBroker {
         return entities;
     }
 
+    async findEntity(id: string) {
+        const response = await this.client.get(`/entities/${encodeURIComponent(id)}`);
+        return new Entity(response.data);
+    }
+
     async insertEntity(entity: Entity) {
         await this.client.post("/entities", entity.toObject());
     }
@@ -56,5 +57,41 @@ export class ContextBroker {
 
     async deleteEntity(entity: Entity) {
         await this.client.delete(`/entities/${encodeURIComponent(entity.getId())}`);
+    }
+
+    async findSubscriptions() {
+        const config: AxiosRequestConfig = {
+            params: {
+                limit: this.contextBrokerMaxLimit,
+                offset: 0
+            }
+        };
+        const subscriptions: Subscription[] = [];
+        while (true) {
+            const response = await this.client.get("/subscriptions", config);
+            subscriptions.push(...response.data.map((subscription: any) => new Subscription(subscription)));
+
+            if (response.data.length && response.data.length === this.contextBrokerMaxLimit) {
+                config.params.offset += response.data.length;
+                continue;
+            }
+
+            break;
+        }
+
+        return subscriptions;
+    }
+
+    async findSubscription(id: string) {
+        const response = await this.client.get(`/subscriptions/${encodeURIComponent(id)}`);
+        return new Subscription(response.data);
+    }
+
+    async insertSubscription(subscription: Subscription) {
+        await this.client.post("/subscriptions", subscription.toObject());
+    }
+
+    async deleteSubscription(subscription: Subscription) {
+        await this.client.delete(`/subscriptions/${encodeURIComponent(subscription.getId())}`);
     }
 }
