@@ -1,5 +1,5 @@
 export class Subscription {
-    private data: any = {
+    data: any = {
         id: ""
     };
 

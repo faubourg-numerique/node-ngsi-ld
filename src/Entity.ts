@@ -1,5 +1,5 @@
 export class Entity {
-    private data: any = {
+    data: any = {
         id: "",
         type: ""
     };
